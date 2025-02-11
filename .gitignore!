@@ -1,0 +1,6 @@
+## Prevent unnecessary tracking.
+
+venv/
+__pycache__/
+*.pyc
+*.pyo
