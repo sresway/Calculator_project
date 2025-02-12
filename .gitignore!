@@ -1,6 +1,9 @@
 ## Prevent unnecessary tracking.
 
 venv/
-__pycache__/
 *.pyc
 *.pyo
+*.sw*
+.coverage
+.pytest_cache
+*__pycache__
