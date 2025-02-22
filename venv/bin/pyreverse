@@ -1,4 +1,4 @@
-#!/Users/sway/my_python_project/Calculator_project/venv/bin/python3.12
+#!/Users/sway/my_python_project/Calculator_project/venv/bin/python3.13
 # -*- coding: utf-8 -*-
 import re
 import sys
