@@ -49,4 +49,3 @@ def pytest_generate_tests(metafunc):
         if {"a", "b", "operation", "expected"}.issubset(metafunc.fixturenames):
             test_cases = generate_test_cases(num_tests)
             metafunc.parametrize("a, b, operation, expected", test_cases)
-
