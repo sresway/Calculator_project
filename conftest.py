@@ -43,7 +43,7 @@ def generate_test_cases(n):
 
 def pytest_generate_tests(metafunc):
     """Parameterize test cases based on --num_records."""
-    print("\n✅ pytest_generate_tests LOADED in conftest.py\n")  # DEBUG LOG
+    print("pytest_generate_tests LOADED in conftest.py\n")  # DEBUG LOG
     if "num_records" in metafunc.config.option:  # Ensure option exists
         num_tests = metafunc.config.option.num_records
         if {"a", "b", "operation", "expected"}.issubset(metafunc.fixturenames):
