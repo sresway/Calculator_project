@@ -1,6 +1,8 @@
 """Main entry point for the calculator program (Command-Line Mode)."""
 
+import os
 import sys
+from dotenv import load_dotenv
 from calculator import Calculator
 from app.app import CalculatorApp
 
@@ -52,4 +54,9 @@ def main():
     except IndexError:
         print("Usage: python main.py <num1> <num2> <operation>")
         sys.exit(1)
-        
+
+# Load environment variables
+load_dotenv()
+
+# Example usage
+print("Environment:", os.getenv("ENVIRONMENT"))
