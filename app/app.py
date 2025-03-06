@@ -1,9 +1,14 @@
 """Calculator Application Module"""
 
+from calculator import Calculator
 from commands import add, subtract, multiply, divide
 
 class CalculatorApp:
     """Main calculator application."""
+
+    def __init__(self):
+        """Initialize the calculator with available operations."""
+        self.calculator = Calculator()  #  Uses Calculator for actual math
 
     def __init__(self):
         """Initialize the calculator with available commands."""
@@ -25,20 +30,24 @@ class CalculatorApp:
                 return "Invalid command format. Use: <num1> <num2> <operation>"
 
             num1, num2, operation = parts
-            try:
-                num1, num2 = float(num1), float(num2)
-            except ValueError:
-                return "Invalid number input: Ensure both inputs are valid numbers."
+            num1, num2 = float(num1), float(num2)
 
             if operation not in self.commands:
                 return f"Unknown operation: {operation}"
 
             result = self.commands[operation](num1, num2)
-            return f"Result: {result}"
+
+            # ✅ Ensure the result is a valid number before formatting
+            if isinstance(result, (int, float)):
+                return f"Result: {int(result)}" if result.is_integer() else f"Result: {result}"
+            else:
+                return "An unexpected error occurred: Operation did not return a number."
+
+        except ValueError:
+            return "Invalid number input. Please provide two numbers followed by an operation."
 
         except ZeroDivisionError:
-            return "An error occurred: Division by zero is not allowed"
+            return "Result: Cannot divide by zero"
 
-        except KeyError:
-            return f"Unknown operation: {operation}"
-        
+        except Exception as error:
+            return f"An unexpected error occurred: {error}"

@@ -1,3 +1,5 @@
+"""Command Plugins"""
+
 import importlib
 import os
 

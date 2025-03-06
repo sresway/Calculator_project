@@ -28,7 +28,7 @@ class Calculator:
     def divide(a: float, b: float) -> float:
         """Returns the quotient of two numbers."""
         if b == 0:
-            raise ValueError("Division by zero is not allowed")
+            raise ValueError("Result: Cannot divide by zero")
         result = a / b
         Calculator._history.append(f"{a} / {b} = {result}")
         return result

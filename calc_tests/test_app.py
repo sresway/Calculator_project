@@ -1,3 +1,5 @@
+"""Testing for App"""
+
 import pytest
 from app.app import CalculatorApp
 
@@ -35,4 +37,4 @@ def test_addition(app):
 def test_division_by_zero(app):
     """Test division by zero handling."""
     result = app.run_command("5 0 divide")
-    assert "An error occurred: Division by zero is not allowed" in result 
+    assert "Result: Cannot divide by zero" in result 
