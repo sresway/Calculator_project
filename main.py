@@ -2,61 +2,69 @@
 
 import os
 import sys
+import logging
 from dotenv import load_dotenv
-from calculator import Calculator
 from app.app import CalculatorApp
+from calculator import Calculator
 
-def main():
-    """Run the calculator as a command-line tool."""
-    calc = CalculatorApp()
-    
-    if len(sys.argv) > 1:
-        command = " ".join(sys.argv[1:])
-        print(calc.run_command(command))
-        return
+# Configure logging to log both to console and a file
+logging.basicConfig(
+    level=logging.DEBUG,  # Change to INFO if you don't want extra debug logs
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("calculator.log"),  # Save logs to a file
+        logging.StreamHandler(),  # Print logs to console
+    ]
+)
 
-    while True:
-        user_input = input("> ")
-        if user_input.lower() == "exit":
-            break
-        print(calc.run_command(user_input))
-
-if __name__ == "__main__":
-    main()
+# Load environment variables
+load_dotenv()
 
 def format_number(n):
     """Format numbers to remove unnecessary decimals."""
     return int(n) if n == int(n) else n
 
 def main():
-    """Handle command-line arguments and perform calculations."""
-    try:
-        _, num1, num2, operation = sys.argv 
-        num1, num2 = float(num1), float(num2)  
-        calculator = Calculator()
+    """Run the calculator in interactive mode or handle command-line arguments."""
+    calc = CalculatorApp()
 
+    # Handle command-line arguments (e.g., python main.py 5 3 add)
+    if len(sys.argv) > 1:
         try:
-            result = getattr(calculator, operation)(num1, num2)  
-            print(
-                f"The result of {format_number(num1)} {operation} "
-                f"{format_number(num2)} is equal to {format_number(result)}"
-            )
-        except AttributeError:
-            print(f"Unknown operation: {operation}")
+            _, num1, num2, operation = sys.argv  
+            num1, num2 = float(num1), float(num2)  
+            result = calc.run_command(f"{num1} {num2} {operation}")
+            print(result)
+        except ValueError:
+            logging.error("Invalid number input: Ensure both inputs are valid numbers.")
+            print("Invalid number input: Ensure both inputs are valid numbers.")
             sys.exit(1)
-        except ValueError as e:
-            print(f"An error occurred: {e}")
+        except IndexError:
+            logging.error("Usage: python main.py <num1> <num2> <operation>")
+            print("Usage: python main.py <num1> <num2> <operation>")
             sys.exit(1)
+        return  # Exit after handling CLI arguments
 
-    except ValueError:
-        print("Invalid number input: Ensure both inputs are valid numbers.")
-        sys.exit(1)
-    except IndexError:
-        print("Usage: python main.py <num1> <num2> <operation>")
-        sys.exit(1)
+    # Interactive REPL mode
+    logging.info("Calculator started. Type 'exit' to quit.")
+    print("Calculator started. Type 'exit' to quit.")
 
-# Load environment variables
-load_dotenv()
+    while True:
+        try:
+            user_input = input("> ").strip()
+            if user_input.lower() == "exit":
+                break
+            print(calc.run_command(user_input))
+        except KeyboardInterrupt:
+            logging.warning("User interrupted program.")
+            print("\nExiting calculator.")
+            break
+        except Exception as e:
+            logging.error(f"Unexpected error: {e}")
+            print(f"An unexpected error occurred: {e}")
 
-# Example usage
+if __name__ == "__main__":
+    main()
+
+# Example usage of environment variable
 print("Environment:", os.getenv("ENVIRONMENT"))
